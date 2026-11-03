@@ -1,0 +1,43 @@
+@startuml usecase-lab2
+title Диаграмма вариантов использования. Электронные договоры и доп. соглашения
+left to right direction
+
+actor "Оператор\nдоговорного отдела" as Operator
+actor "Студент /\nплательщик" as Student
+actor "Системный\nадминистратор" as Admin
+actor "Уполномоченный\nподписант (УКЭП вуза)" as Signer
+actor "Фоновое\nрегламентное задание" as Job
+
+rectangle "Подсистема электронного подписания договоров 1С–ЕПГУ" {
+  usecase "Сформировать договор\nпо единому шаблону" as UC1
+  usecase "Передать подписанный\nвузом договор в «Госключ»" as UC2
+  usecase "Получить договор\nи подписать в «Госключе»" as UC3
+  usecase "Зафиксировать результат\nподписания в карточке" as UC4
+  usecase "Просмотреть подписанный\nкомплект со штампами ЭП" as UC5
+  usecase "Запросить актуальный\nстатус подписания" as UC6
+  usecase "Отозвать заявление\nдо подписания" as UC7
+  usecase "Диагностировать\nобмен с ЕПГУ" as UC8
+  usecase "Получить задачу по отказу\nили истечению срока" as UC9
+}
+
+Operator --> UC1
+Operator --> UC2
+Operator --> UC5
+Operator --> UC6
+Operator --> UC7
+Operator --> UC9
+Student --> UC3
+Admin --> UC8
+Signer --> UC2
+Job --> UC4
+
+UC2 ..> UC1 : include
+UC9 .> UC4 : extend
+
+note bottom of UC9
+  Задача создаётся, когда UC-4
+  получает REJECTED или EXPIRED,
+  а также при ошибке проверки подписи.
+end note
+
+@enduml
